@@ -1,0 +1,66 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+  
+     <div>
+          <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+     </div>
+     
+     <h3>Shop name:Rizky's</h3>
+	<div class="jin">
+	
+			
+		<div id="first">
+
+			<table>
+				<thead>
+					<th>SL#</th>
+					<th id="product">Product details</th>
+					<th>Unit price</th>
+					<th>Qty</th>
+					<th>Price</th>
+					<th></th>
+				</thead>
+                    {% for item in items %}
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td class="details"><image src="{{item.product.imageURL}}"><span id="desc">{{item.product.name}}</span> </td>
+						<td id="unit">${{item.product.price|floatformat:2}}</td>
+						<td style="flex: 1;" id="quan"><p class="quantity">{{item.quantity}}</p>
+                                   <div class="quantity">
+                                        <img data-product={{item.product.id}} data-action="add" id="arrowup" class="chg-quantity update-cart" src="{% static 'images/arrow-up.png' %}" alt="">
+                                        <img data-product={{item.product.id}} data-action="remove" id="arrowdown" class="chg-quantity update-cart" src="{% static 'images/arrow-down.png' %}" alt="">
+                                   </div>
+						</td>
+						<td>${{item.get_total|floatformat:2}}</td>
+						<td><button data-product={{item.product.id}} data-action="remove" class="update-cart" id="ico"><i class="gg-remove"></i></button></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td id="wod">color:Black Size:38 </td>
+					</tr>
+				</tbody>
+                    {% endfor %}
+			</table>
+		</div>
+		
+		<div id="second">
+			<p>Sub total<span class="price">${{order.get_cart_total|floatformat:2}}</span> </p>
+			<p>Tax<span class="price">$0.00</span></p>
+			<p>Shipping<span class="price">$0.00</span></p>
+			<p>Discount on product<span class="price">-${{discounted_price|floatformat:2}}</span></p>
+               <form action="{% url 'add_coupon' %}" method="post">
+                    {% csrf_token %}
+                    {{ couponform.code }}
+                    <!-- <input type="text" name="coupon" placeholder="Coupon code"> -->
+			     <button id="apl" type="submit">Apply code</button>
+
+               </form>
+		
+			<hr>
+			<p>Total<span class="price">${{total|floatformat:2}}</span></p>
+		</div>
+		
+	</div>
+{% endblock content %}
